@@ -1,0 +1,21 @@
+---
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+- name:  Start and enable nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Configure nginx site
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+  notify: restart nginx
+
+- name: Create index.html
+  copy:
+    content: "<h1> Hello from Ansible + Nginx!</h1>\n"
+    dest: "{{ nginx_root }}/index.html"

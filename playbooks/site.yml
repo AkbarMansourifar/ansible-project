@@ -1,0 +1,11 @@
+---
+
+- name: Configure test server 
+  hosts: test
+  become: true
+  gather_facts: yes
+
+  roles:
+    - common
+    - nginx
+    - docker
