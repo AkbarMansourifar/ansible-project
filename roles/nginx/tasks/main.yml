@@ -1,13 +1,31 @@
 ---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
 - name: Install nginx
   apt:
     name: nginx
     state: present
-- name:  Start and enable nginx
+
+- name: Ensure nginx is started and enabled
   service:
     name: nginx
     state: started
     enabled: yes
+  register: nginx_service
+  ignore_errors: yes
+
+- name: Check if nginx service exists
+  command: systemctl status nginx
+  register: nginx_check
+  changed_when: false
+  failed_when: false
+
+- name: Show nginx status
+  debug:
+    msg: "Nginx status: {{ nginx_check.stdout_lines }}"
+  when: nginx_check.rc != 0
 
 - name: Configure nginx site
   template:
@@ -17,5 +35,5 @@
 
 - name: Create index.html
   copy:
-    content: "<h1> Hello from Ansible + Nginx!</h1>\n"
+    content: "<h1>Hello from Ansible + Nginx!</h1>\n"
     dest: "{{ nginx_root }}/index.html"

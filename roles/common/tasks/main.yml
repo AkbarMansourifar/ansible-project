@@ -6,14 +6,14 @@
     remote_src: yes
     force: no
 
-- name: Change Debian mirrors to Shatel mirror
+- name: Change Debian mirrors to Iranian mirror
   copy:
     dest: /etc/apt/sources.list
     content: |
       deb http://mirror.shatel.ir/debian bookworm main contrib non-free non-free-firmware
       deb http://mirror.shatel.ir/debian bookworm-updates main contrib non-free non-free-firmware
       deb http://mirror.shatel.ir/debian-security bookworm-security main contrib non-free non-free-firmware
-  when: ansible_distribution == "Debian"
+  when: ansible_distribution == "Debian" and use_iran_mirror | default(false)
 
 - name: Update apt cache
   apt:

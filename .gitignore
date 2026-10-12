@@ -32,3 +32,4 @@ Thumbs.db
 *.bak
 *.backup
 sources.list.bak
+/inventory/production.yml
